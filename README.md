@@ -88,10 +88,10 @@ npm install node-fetch
 ### Basic Usage
 
 ```javascript
-import DexcomShare from './jsdexcom.js';
+import JSDexcom from './jsdexcom.js';
 
 // Create a client (default region is 'ous')
-const dexcom = new DexcomShare('YOUR_USERNAME', 'YOUR_PASSWORD');
+const dexcom = new JSDexcom('YOUR_USERNAME', 'YOUR_PASSWORD');
 
 // Get latest reading
 try {
@@ -107,13 +107,13 @@ try {
 
 ```javascript
 // For US users
-const dexcom = new DexcomShare('USERNAME', 'PASSWORD', 'us');
+const dexcom = new JSDexcom('USERNAME', 'PASSWORD', 'us');
 
 // For International users
-const dexcom = new DexcomShare('USERNAME', 'PASSWORD', 'ous');
+const dexcom = new JSDexcom('USERNAME', 'PASSWORD', 'ous');
 
 // For Japan users
-const dexcom = new DexcomShare('USERNAME', 'PASSWORD', 'jp');
+const dexcom = new JSDexcom('USERNAME', 'PASSWORD', 'jp');
 ```
 
 ### Using the Test Script
@@ -156,11 +156,11 @@ Session ID: fe70c955...
 
 ## API Reference
 
-### DexcomShare Class
+### JSDexcom Class
 
 #### Constructor
 ```javascript
-const dexcom = new DexcomShare(username, password, region = 'ous')
+const dexcom = new JSDexcom(username, password, region = 'ous')
 ```
 
 #### Methods
