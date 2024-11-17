@@ -136,7 +136,7 @@ DEXCOM_REGION=ous node test.js YOUR_USERNAME YOUR_PASSWORD
 ### Sample Output
 
 ```
-=== Dexcom Share Test ===
+=== JSdexcom Test ===
 Region: OUS
 Server: https://shareous1.dexcom.com
 
