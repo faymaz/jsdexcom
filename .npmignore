@@ -1,0 +1,21 @@
+# Development files
+.git
+.gitignore
+.eslintrc.json
+.prettierrc
+.husky
+.vscode
+.idea
+
+# Test files
+tests
+examples
+
+# Documentation
+docs
+*.md
+!README.md
+
+# Misc
+*.log
+.DS_Store
