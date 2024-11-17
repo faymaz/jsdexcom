@@ -1,54 +1,60 @@
 {
-    "name": "@faymaz/jsdexcom",
-    "version": "1.0.0",
-    "description": "Dexcom Share Node.js Client",
-    "main": "index.js",
-    "type": "module",
-    "scripts": {
-      "test": "node tests/test.js --skip-auth",
-      "test:full": "node tests/test.js",
-      "example": "node examples/basic-usage.js",
-      "lint": "eslint \"src/**/*.js\" \"tests/**/*.js\" \"examples/**/*.js\" || true",
-      "format": "prettier --write .",
-      "prepare": "husky install",
-      "prepublishOnly": "npm run lint"
-    },
-    "publishConfig": {
-      "access": "public"
-    },
-    "keywords": [
-      "dexcom",
-      "jsdexcom",
-      "cgm",
-      "diabetes",
-      "glucose",
-      "health",
-      "medical",
-      "share"
-    ],
-    "author": {
-      "name": "faymaz",
-      "email": "faymaz@aymaz.org",
-      "url": "https://github.com/faymaz"
-    },
-    "license": "MIT",
-    "dependencies": {
-      "node-fetch": "^3.3.0"
-    },
-    "devDependencies": {
-      "eslint": "^8.54.0",
-      "prettier": "^3.1.0",
-      "husky": "^8.0.3"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/faymaz/jsdexcom.git"
-    },
-    "bugs": {
-      "url": "https://github.com/faymaz/jsdexcom/issues"
-    },
-    "homepage": "https://github.com/faymaz/jsdexcom#readme",
-    "engines": {
-      "node": ">=14.0.0"
-    }
+  "name": "@faymaz/jsdexcom",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Node.js library for accessing Dexcom Share API with international support",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/esm/test.js --skip-auth",
+    "test:esm": "node tests/esm/test.js",
+    "test:cjs": "node tests/cjs/test.cjs",
+    "test:all": "./tests/utils/run-tests.sh",
+    "report": "node tests/utils/generate-report.js",
+    "docs": "jsdoc -c jsdoc.json",
+    "format": "prettier --write .",
+    "lint": "eslint \"src/**/*.js\" \"tests/**/*.js\" \"examples/**/*.js\" --fix",
+    "prepare": "husky install",
+    "clean": "rm -rf tests/logs/*.log docs/",
+    "build": "npm run clean && npm run docs && npm run format && npm run lint"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "dexcom",
+    "jsdexcom",
+    "cgm",
+    "diabetes",
+    "glucose",
+    "health",
+    "medical",
+    "share"
+  ],
+  "author": {
+    "name": "faymaz",
+    "email": "faymaz@aymaz.org",
+    "url": "https://github.com/faymaz"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0",
+    "husky": "^8.0.3",
+    "jsdoc": "^4.0.2",
+    "clean-jsdoc-theme": "^4.2.17"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faymaz/jsdexcom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/faymaz/jsdexcom/issues"
+  },
+  "homepage": "https://github.com/faymaz/jsdexcom#readme",
+  "engines": {
+    "node": ">=14.0.0"
   }
+}

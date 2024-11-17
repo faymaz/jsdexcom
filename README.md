@@ -1,86 +1,17 @@
 ![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=faymaz.jsdexcom)
+
 # Language EN
+
 **Author:** [faymaz](https://www.npmjs.com/~faymaz)
 
-# JSdexcom
+# @faymaz/jsdexcom
 
-A Node.js library for accessing Dexcom Share API, allowing you to fetch real-time CGM (Continuous Glucose Monitor) data. This library supports international Dexcom users with region-specific server endpoints.
-
-## Installation
-
-```bash
-npm install jsdexcom
-```
-
-## Usage
-
-```javascript
-import JSDexcom from 'jsdexcom';
-
-// Create a client (default region is 'ous')
-const dexcom = new JSDexcom('YOUR_USERNAME', 'YOUR_PASSWORD');
-
-// Get latest reading
-try {
-    const reading = await dexcom.getLatestGlucose();
-    console.log(`Current glucose: ${reading._value} mg/dL`);
-    console.log(`Trend: ${reading._trend_arrow} (${reading._trend_direction})`);
-} catch (error) {
-    console.error('Error:', error.message);
-}
-```
-## 2.Import in your code:
-```javascript
-import JSDexcom from 'jsdexcom';
-
-const dexcom = new JSDexcom('username', 'password', 'ous');
-const reading = await dexcom.getLatestGlucose();
-
-```
-## 3.Run examples:
-```bash
-# Set environment variables
-export DEXCOM_USERNAME=your-username
-export DEXCOM_PASSWORD=your-password
-export DEXCOM_REGION=ous
-
-# Run example
-npm run example
-```
-## License
-MIT License
-
--------------------------------------------
-
-[faymaz](https://github.com/faymaz)
-
-# You can also use as a standalone
-
-# # JSdexcom
-
-A Node.js library for accessing Dexcom Share API, allowing you to fetch real-time CGM (Continuous Glucose Monitor) data. This library supports international Dexcom users with region-specific server endpoints.
-
-## Features
-
-- 🌐 Support for multiple regions (US, OUS, Japan)
-- 📊 Real-time glucose readings with trend information
-- 🔐 Secure authentication flow
-- ⚡ Automatic session management
-- 🔄 Automatic retry on session expiration
-- 📈 Trend arrow visualization
-- 💉 Blood glucose status indicators
+Node.js library for accessing Dexcom Share API with international support. This library allows you to fetch real-time CGM (Continuous Glucose Monitor) data from Dexcom Share servers.
 
 ## Installation
 
-1. Clone the repository:
 ```bash
-git clone https://github.com/faymaz/jsdexcom.js.git
-cd jsdexcom.js
-```
-
-2. Install dependencies:
-```bash
-npm install node-fetch
+npm install @faymaz/jsdexcom
 ```
 
 ## Usage
@@ -88,89 +19,35 @@ npm install node-fetch
 ### Basic Usage
 
 ```javascript
-import JSDexcom from './jsdexcom.js';
+import JSDexcom from '@faymaz/jsdexcom';
 
-// Create a client (default region is 'ous')
+// Create client (default region is 'ous')
 const dexcom = new JSDexcom('YOUR_USERNAME', 'YOUR_PASSWORD');
 
-// Get latest reading
 try {
-    const reading = await dexcom.getLatestGlucose();
-    console.log(`Current glucose: ${reading._value} mg/dL`);
-    console.log(`Trend: ${reading._trend_arrow} (${reading._trend_direction})`);
+  const reading = await dexcom.getLatestGlucose();
+  console.log(`Current glucose: ${reading._value} mg/dL`);
+  console.log(`Trend: ${reading._trend_arrow} (${reading._trend_direction})`);
+  console.log(`Time: ${reading._datetime.toLocaleString()}`);
 } catch (error) {
-    console.error('Error:', error.message);
+  console.error('Error:', error.message);
 }
 ```
 
-### Specify Region
+### Region-Specific Usage
 
 ```javascript
 // For US users
-const dexcom = new JSDexcom('USERNAME', 'PASSWORD', 'us');
+const dexcomUS = new JSDexcom('USERNAME', 'PASSWORD', 'us');
 
-// For International users
-const dexcom = new JSDexcom('USERNAME', 'PASSWORD', 'ous');
+// For International users (default)
+const dexcomOUS = new JSDexcom('USERNAME', 'PASSWORD', 'ous');
 
 // For Japan users
-const dexcom = new JSDexcom('USERNAME', 'PASSWORD', 'jp');
+const dexcomJP = new JSDexcom('USERNAME', 'PASSWORD', 'jp');
 ```
 
-### Using the Test Script
-
-The repository includes a test script to verify your connection:
-
-```bash
-# Basic usage (defaults to OUS region)
-node test.js YOUR_USERNAME YOUR_PASSWORD
-
-# Specify region
-node test.js YOUR_USERNAME YOUR_PASSWORD us
-node test.js YOUR_USERNAME YOUR_PASSWORD ous
-node test.js YOUR_USERNAME YOUR_PASSWORD jp
-
-# Using environment variable for region
-DEXCOM_REGION=ous node test.js YOUR_USERNAME YOUR_PASSWORD
-```
-
-### Sample Output
-
-```
-=== JSdexcom Test ===
-Region: OUS
-Server: https://shareous1.dexcom.com
-
-✓ Connection successful!
-
-=== Glucose Reading ===
-Value: 111 mg/dL
-Trend: ↘ (FortyFiveDown)
-Time: 11/17/2024, 1:29:04 AM
-Status: ✓ IN RANGE
-
-=== Connection Info ===
-Server: https://shareous1.dexcom.com
-Last update: 11/17/2024, 1:34:01 AM
-Session ID: fe70c955...
-```
-
-## API Reference
-
-### JSDexcom Class
-
-#### Constructor
-```javascript
-const dexcom = new JSDexcom(username, password, region = 'ous')
-```
-
-#### Methods
-
-- `authenticate()`: Authenticates with Dexcom servers
-- `getLatestGlucose()`: Gets the latest glucose reading
-
-#### Response Format
-
-The `getLatestGlucose()` method returns an object with:
+### Response Format
 
 ```javascript
 {
@@ -178,68 +55,105 @@ The `getLatestGlucose()` method returns an object with:
         WT: "Date timestamp",
         ST: "Date timestamp",
         DT: "Date timestamp",
-        Value: 111,
-        Trend: "TrendString"
+        Value: 120,
+        Trend: "Flat"
     },
-    _value: 111,              // Glucose value in mg/dL
-    _trend_direction: "Trend", // Text description of trend
-    _trend: 5,                // Numeric trend value
-    _datetime: Date,          // JavaScript Date object
-    _trend_arrow: "↘"         // Visual representation of trend
+    _value: 120,              // Glucose value in mg/dL
+    _trend_direction: "Flat", // Text description of trend
+    _trend_arrow: "→",       // Visual representation of trend
+    _datetime: Date          // JavaScript Date object
 }
 ```
 
-#### Trend Values
+### Trend Arrows
 
-| Trend | Arrow | Description |
-|-------|-------|-------------|
-| 0 | → | None |
-| 1 | ↑↑ | Double Up |
-| 2 | ↑ | Single Up |
-| 3 | ↗ | Forty Five Up |
-| 4 | → | Flat |
-| 5 | ↘ | Forty Five Down |
-| 6 | ↓ | Single Down |
-| 7 | ↓↓ | Double Down |
-| 8 | ? | Not Computable |
-| 9 | ⚠️ | Rate Out Of Range |
+| Trend          | Arrow | Description            |
+| -------------- | ----- | ---------------------- |
+| None           | →     | No trend               |
+| DoubleUp       | ↑↑    | Rising quickly         |
+| SingleUp       | ↑     | Rising                 |
+| FortyFiveUp    | ↗    | Rising slowly          |
+| Flat           | →     | Stable                 |
+| FortyFiveDown  | ↘    | Falling slowly         |
+| SingleDown     | ↓     | Falling                |
+| DoubleDown     | ↓↓    | Falling quickly        |
+| NotComputable  | ?     | Cannot determine trend |
+| RateOutOfRange | ⚠️    | Rate of change unknown |
 
-## Region Support
+## Environment Variables
 
-| Region | Code | Server |
-|--------|------|---------|
-| United States | `us` | share2.dexcom.com |
-| Outside US | `ous` | shareous1.dexcom.com |
-| Japan | `jp` | shareous1.dexcom.com |
+You can use environment variables for configuration:
+
+```bash
+DEXCOM_USERNAME=your-username
+DEXCOM_PASSWORD=your-password
+DEXCOM_REGION=ous  # or 'us' or 'jp'
+```
 
 ## Error Handling
 
-The library includes comprehensive error handling:
-- Authentication failures
-- Session expiration
-- Network errors
-- Invalid regions
-- Missing or invalid readings
+```javascript
+try {
+  const dexcom = new JSDexcom('USERNAME', 'PASSWORD');
+  const reading = await dexcom.getLatestGlucose();
+  // ... handle reading
+} catch (error) {
+  if (error.message.includes('Invalid credentials')) {
+    console.error('Check your username and password');
+  } else if (error.message.includes('No readings available')) {
+    console.error('No recent glucose readings found');
+  } else {
+    console.error('Error:', error.message);
+  }
+}
+```
 
-## Requirements
+## Examples
 
-- Node.js 14 or higher
-- Active Dexcom Share account
-- Share feature enabled in Dexcom mobile app
+### Monitor Glucose Levels
 
-## Contributing
+```javascript
+import JSDexcom from '@faymaz/jsdexcom';
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+async function monitorGlucose() {
+  const dexcom = new JSDexcom('USERNAME', 'PASSWORD');
 
-## Credits
+  setInterval(
+    async () => {
+      try {
+        const reading = await dexcom.getLatestGlucose();
+        console.log(
+          `${reading._datetime.toLocaleTimeString()}: ${reading._value} mg/dL ${reading._trend_arrow}`
+        );
 
-Inspired by:
-- [pydexcom](https://github.com/gagebenne/pydexcom)
+        if (reading._value < 70) {
+          console.log('⚠️ LOW glucose alert!');
+        } else if (reading._value > 180) {
+          console.log('⚠️ HIGH glucose alert!');
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    },
+    5 * 60 * 1000
+  ); // Check every 5 minutes
+}
+
+monitorGlucose();
+```
+
+## Standalone Version
+
+You can also use the standalone version without npm. Check the [GitHub repository](https://github.com/faymaz/jsdexcom) for more information.
 
 ## License
 
-MIT License
+MIT
+
+## Author
+
+faymaz - [GitHub](https://github.com/faymaz)
 
 ## Disclaimer
 
-This project is not affiliated with Dexcom, Inc. Use at your own risk. Do not use this library for making medical decisions. Always verify glucose values using your official Dexcom receiver or app.
+This project is not affiliated with Dexcom, Inc. Use at your own risk. Always verify glucose values using your official Dexcom receiver or app.

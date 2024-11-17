@@ -1,56 +1,56 @@
 {
-    "source": {
-      "include": ["src", "README.md"],
-      "includePattern": ".js$",
-      "excludePattern": "(node_modules/|docs)"
-    },
-    "plugins": ["plugins/markdown"],
-    "templates": {
-      "cleverLinks": true,
-      "monospaceLinks": true,
-      "useLongnameInNav": false,
-      "showInheritedInNav": true
-    },
-    "opts": {
-      "destination": "./docs",
-      "encoding": "utf8",
-      "private": true,
-      "recurse": true,
-      "template": "node_modules/clean-jsdoc-theme",
-      "theme_opts": {
-        "title": "JSdexcom Documentation",
-        "homepageTitle": "JSdexcom - Node.js Dexcom Share API Client",
-        "menu": [
-          {
-            "title": "GitHub",
-            "link": "https://github.com/faymaz/jsdexcom",
-            "target": "_blank"
-          },
-          {
-            "title": "NPM",
-            "link": "https://www.npmjs.com/package/@faymaz/jsdexcom",
-            "target": "_blank"
-          }
-        ],
-        "meta": [
-          {
-            "name": "author",
-            "content": "faymaz"
-          },
-          {
-            "name": "description",
-            "content": "Node.js library for accessing Dexcom Share API with international support"
-          }
-        ],
-        "search": true,
-        "create_style": true,
-        "include_css": [],
-        "include_js": [],
-        "base_css": []
-      }
-    },
-    "markdown": {
-      "hardwrap": false,
-      "idInHeadings": true
+  "source": {
+    "include": ["src", "README.md"],
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true,
+    "useLongnameInNav": false,
+    "showInheritedInNav": true
+  },
+  "opts": {
+    "destination": "./docs",
+    "encoding": "utf8",
+    "private": true,
+    "recurse": true,
+    "template": "node_modules/clean-jsdoc-theme",
+    "theme_opts": {
+      "title": "JSdexcom Documentation",
+      "homepageTitle": "JSdexcom - Node.js Dexcom Share API Client",
+      "menu": [
+        {
+          "title": "GitHub",
+          "link": "https://github.com/faymaz/jsdexcom",
+          "target": "_blank"
+        },
+        {
+          "title": "NPM",
+          "link": "https://www.npmjs.com/package/@faymaz/jsdexcom",
+          "target": "_blank"
+        }
+      ],
+      "meta": [
+        {
+          "name": "author",
+          "content": "faymaz"
+        },
+        {
+          "name": "description",
+          "content": "Node.js library for accessing Dexcom Share API with international support"
+        }
+      ],
+      "search": true,
+      "create_style": true,
+      "include_css": [],
+      "include_js": [],
+      "base_css": []
     }
+  },
+  "markdown": {
+    "hardwrap": false,
+    "idInHeadings": true
   }
+}

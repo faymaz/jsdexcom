@@ -1,79 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JSdexcom Standalone Example</title>
     <script src="jsdexcom.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .reading {
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .error {
-            color: red;
-            padding: 10px;
-            border: 1px solid red;
-            border-radius: 5px;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .reading {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .error {
+        color: red;
+        padding: 10px;
+        border: 1px solid red;
+        border-radius: 5px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>JSdexcom Glucose Reader</h1>
-    
+
     <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username">
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password">
-        
-        <label for="region">Region:</label>
-        <select id="region">
-            <option value="us">United States</option>
-            <option value="ous" selected>Outside US</option>
-            <option value="jp">Japan</option>
-        </select>
-        
-        <button onclick="getReading()">Get Reading</button>
+      <label for="username">Username:</label>
+      <input type="text" id="username" />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" />
+
+      <label for="region">Region:</label>
+      <select id="region">
+        <option value="us">United States</option>
+        <option value="ous" selected>Outside US</option>
+        <option value="jp">Japan</option>
+      </select>
+
+      <button onclick="getReading()">Get Reading</button>
     </div>
 
     <div id="result" class="reading"></div>
 
     <script>
-        async function getReading() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const region = document.getElementById('region').value;
-            const resultDiv = document.getElementById('result');
+      async function getReading() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const region = document.getElementById('region').value;
+        const resultDiv = document.getElementById('result');
 
-            if (!username || !password) {
-                resultDiv.innerHTML = '<div class="error">Please enter username and password</div>';
-                return;
-            }
+        if (!username || !password) {
+          resultDiv.innerHTML = '<div class="error">Please enter username and password</div>';
+          return;
+        }
 
-            try {
-                const dexcom = new JSDexcom(username, password, region);
-                const reading = await dexcom.getLatestGlucose();
-                
-                resultDiv.innerHTML = `
+        try {
+          const dexcom = new JSDexcom(username, password, region);
+          const reading = await dexcom.getLatestGlucose();
+
+          resultDiv.innerHTML = `
                     <h2>Current Glucose Reading</h2>
                     <p>Value: ${reading._value} mg/dL ${reading._trend_arrow}</p>
                     <p>Trend: ${reading._trend_direction}</p>
                     <p>Time: ${reading._datetime.toLocaleString()}</p>
                 `;
-            } catch (error) {
-                resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
-            }
+        } catch (error) {
+          resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
         }
+      }
     </script>
-</body>
+  </body>
 </html>

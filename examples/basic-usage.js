@@ -1,41 +1,40 @@
 import JSDexcom from '../index.js';
 
 async function main() {
-    // Get credentials from environment variables or pass them directly
-    const username = process.env.DEXCOM_USERNAME;
-    const password = process.env.DEXCOM_PASSWORD;
-    const region = process.env.DEXCOM_REGION || 'ous';
+  // Get credentials from environment variables or pass them directly
+  const username = process.env.DEXCOM_USERNAME;
+  const password = process.env.DEXCOM_PASSWORD;
+  const region = process.env.DEXCOM_REGION || 'ous';
 
-    if (!username || !password) {
-        console.log('Please set DEXCOM_USERNAME and DEXCOM_PASSWORD environment variables');
-        console.log('Example:');
-        console.log('  DEXCOM_USERNAME=your-username DEXCOM_PASSWORD=your-password node examples/basic-usage.js');
-        process.exit(1);
-    }
+  if (!username || !password) {
+    console.log('Please set DEXCOM_USERNAME and DEXCOM_PASSWORD environment variables');
+    console.log('Example:');
+    console.log(
+      '  DEXCOM_USERNAME=your-username DEXCOM_PASSWORD=your-password node examples/basic-usage.js'
+    );
+    process.exit(1);
+  }
 
-    try {
-        // Create JSDexcom client
-        const dexcom = new JSDexcom(username, password, region);
+  try {
+    // Create JSDexcom client
+    const dexcom = new JSDexcom(username, password, region);
 
-        // Get latest reading
-        const reading = await dexcom.getLatestGlucose();
+    // Get latest reading
+    const reading = await dexcom.getLatestGlucose();
 
-        // Display results
-        console.log('\nCurrent Glucose Reading:');
-        console.log('------------------------');
-        console.log(`Value: ${reading._value} mg/dL`);
-        console.log(`Trend: ${reading._trend_arrow} (${reading._trend_direction})`);
-        console.log(`Time: ${reading._datetime.toLocaleString()}`);
-        
-        const status = reading._value < 70 ? '⚠️ LOW' : 
-                      reading._value > 180 ? '⚠️ HIGH' : 
-                      '✓ IN RANGE';
-        console.log(`Status: ${status}`);
+    // Display results
+    console.log('\nCurrent Glucose Reading:');
+    console.log('------------------------');
+    console.log(`Value: ${reading._value} mg/dL`);
+    console.log(`Trend: ${reading._trend_arrow} (${reading._trend_direction})`);
+    console.log(`Time: ${reading._datetime.toLocaleString()}`);
 
-    } catch (error) {
-        console.error('Error:', error.message);
-        process.exit(1);
-    }
+    const status = reading._value < 70 ? '⚠️ LOW' : reading._value > 180 ? '⚠️ HIGH' : '✓ IN RANGE';
+    console.log(`Status: ${status}`);
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
 }
 
 main();

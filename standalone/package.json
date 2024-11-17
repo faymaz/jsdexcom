@@ -1,9 +1,44 @@
 {
-  "name": "jsdexcom-standalone",
+  "name": "@faymaz/jsdexcom",
   "version": "1.0.0",
+  "description": "Node.js library for accessing Dexcom Share API with international support",
+  "main": "index.js",
   "type": "module",
-  "private": true,
+  "scripts": {
+    "test": "node tests/test.js --skip-auth",
+    "test:full": "node tests/test.js",
+    "example": "node examples/basic-usage.js",
+    "lint": "eslint \"src/**/*.js\" \"tests/**/*.js\" \"examples/**/*.js\" || true",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "dexcom",
+    "jsdexcom",
+    "cgm",
+    "diabetes",
+    "glucose",
+    "health",
+    "medical",
+    "share"
+  ],
+  "author": {
+    "name": "faymaz",
+    "email": "faymaz@proton.me",
+    "url": "https://github.com/faymaz"
+  },
+  "license": "MIT",
   "dependencies": {
     "node-fetch": "^3.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faymaz/jsdexcom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/faymaz/jsdexcom/issues"
+  },
+  "homepage": "https://github.com/faymaz/jsdexcom#readme",
+  "publishConfig": {
+    "access": "public"
   }
 }
