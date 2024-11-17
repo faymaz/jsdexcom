@@ -1,7 +1,6 @@
 ![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=faymaz.jsdexcom)
 # Language EN
-**Author:** [faymaz](https://github.com/faymaz)
-            [faymaz](https://www.npmjs.com/~faymaz)
+**Author:** [faymaz](https://www.npmjs.com/~faymaz)
 
 # JSdexcom
 
@@ -51,7 +50,11 @@ npm run example
 ## License
 MIT License
 
-You can also use standalone
+-------------------------------------------
+
+[faymaz](https://github.com/faymaz)
+
+# You can also use as a standalone
 
 # # JSdexcom
 
