@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import https from 'https';
 
 class JSDexcom {
     static Regions = {
@@ -23,8 +23,57 @@ class JSDexcom {
         this.accountId = null;
     }
 
-    async delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+    async httpRequest(url, options = {}, data = null) {
+        return new Promise((resolve, reject) => {
+            const urlObj = new URL(url);
+            const requestOptions = {
+                hostname: urlObj.hostname,
+                path: urlObj.pathname + urlObj.search,
+                method: options.method || 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'User-Agent': 'Dexcom Share/3.0.2.11',
+                    ...(options.headers || {})
+                }
+            };
+
+            const req = https.request(requestOptions, (res) => {
+                let responseData = '';
+                
+                res.on('data', (chunk) => {
+                    responseData += chunk;
+                });
+
+                res.on('end', () => {
+                    if (res.statusCode >= 200 && res.statusCode < 300) {
+                        resolve({
+                            ok: true,
+                            status: res.statusCode,
+                            text: () => Promise.resolve(responseData),
+                            json: () => Promise.resolve(JSON.parse(responseData))
+                        });
+                    } else {
+                        resolve({
+                            ok: false,
+                            status: res.statusCode,
+                            text: () => Promise.resolve(responseData),
+                            json: () => Promise.resolve(JSON.parse(responseData))
+                        });
+                    }
+                });
+            });
+
+            req.on('error', (error) => {
+                reject(error);
+            });
+
+            if (data) {
+                req.write(JSON.stringify(data));
+            }
+
+            req.end();
+        });
     }
 
     async authenticate() {
@@ -37,15 +86,7 @@ class JSDexcom {
         };
 
         try {
-            const response = await fetch(authUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'User-Agent': 'Dexcom Share/3.0.2.11'
-                },
-                body: JSON.stringify(payload)
-            });
+            const response = await this.httpRequest(authUrl, { method: 'POST' }, payload);
 
             if (!response.ok) {
                 throw new Error(`Authentication failed with status ${response.status}`);
@@ -62,15 +103,7 @@ class JSDexcom {
                 applicationId: this.applicationId
             };
 
-            const loginResponse = await fetch(loginUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'User-Agent': 'Dexcom Share/3.0.2.11'
-                },
-                body: JSON.stringify(loginPayload)
-            });
+            const loginResponse = await this.httpRequest(loginUrl, { method: 'POST' }, loginPayload);
 
             if (!loginResponse.ok) {
                 throw new Error(`Login failed with status ${loginResponse.status}`);
@@ -95,21 +128,9 @@ class JSDexcom {
         }
 
         try {
-            const url = `${this.baseUrl}/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues`;
-            const params = new URLSearchParams({
-                sessionId: this.sessionId,
-                minutes: '10',
-                maxCount: '1'
-            });
+            const url = `${this.baseUrl}/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues?sessionId=${this.sessionId}&minutes=10&maxCount=1`;
 
-            const response = await fetch(`${url}?${params}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'User-Agent': 'Dexcom Share/3.0.2.11'
-                }
-            });
+            const response = await this.httpRequest(url, { method: 'POST' });
 
             if (response.status === 500) {
                 const error = await response.json();
@@ -150,32 +171,20 @@ class JSDexcom {
             'RateOutOfRange': '⚠️'
         };
 
-        const trendDirection = reading.Trend;
-        
         return {
             _json: {
                 WT: reading.WT,
                 ST: reading.ST,
                 DT: reading.DT,
                 Value: reading.Value,
-                Trend: trendDirection
+                Trend: reading.Trend
             },
             _value: reading.Value,
-            _trend_direction: trendDirection,
-            _trend_arrow: TREND_ARROWS[trendDirection] || '?',
+            _trend_direction: reading.Trend,
+            _trend_arrow: TREND_ARROWS[reading.Trend] || '?',
             _datetime: new Date(parseInt(reading.WT.match(/\d+/)[0]))
         };
     }
 }
 
-// // Export for CommonJS
-// if (typeof module !== 'undefined' && module.exports) {
-//     module.exports = JSDexcom;
-// }
-
-// // Make available globally for browsers
-// if (typeof window !== 'undefined') {
-//     window.JSDexcom = JSDexcom;
-// }
-// Export for ES modules
 export default JSDexcom;

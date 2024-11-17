@@ -1,6 +1,5 @@
-// standalone/test.js
-// import JSDexcom from './jsdexcom.js';
-import JSDexcom from './jsdexcom-pure.js';
+const JSDexcom = require('./jsdexcom.js');
+
 async function test(username, password, requestedRegion = 'ous') {
     const region = requestedRegion.toLowerCase();
     
@@ -30,7 +29,7 @@ const password = process.env.DEXCOM_PASSWORD || process.argv[3];
 const region = process.env.DEXCOM_REGION || process.argv[4] || 'ous';
 
 if (!username || !password) {
-    console.log('Usage: node test.js USERNAME PASSWORD [REGION]');
+    console.log('Usage: node test.cjs USERNAME PASSWORD [REGION]');
     console.log('Regions: us, ous, jp');
     process.exit(1);
 }
