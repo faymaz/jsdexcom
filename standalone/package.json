@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "node tests/test.js --skip-auth",
-    "test:full": "node tests/test.js",
+    "test:cjs": "node test.cjs",
+    "test:full": "node test.js",
     "example": "node examples/basic-usage.js",
     "lint": "eslint \"src/**/*.js\" \"tests/**/*.js\" \"examples/**/*.js\" || true",
     "format": "prettier --write ."
@@ -23,13 +24,11 @@
   ],
   "author": {
     "name": "faymaz",
-    "email": "faymaz@proton.me",
+    "email": "faymaz@aymaz.org",
     "url": "https://github.com/faymaz"
   },
   "license": "MIT",
-  "dependencies": {
-    "node-fetch": "^3.3.0"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/faymaz/jsdexcom.git"

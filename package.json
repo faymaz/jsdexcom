@@ -4,6 +4,9 @@
   "type": "module",
   "description": "Node.js library for accessing Dexcom Share API with international support",
   "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "test": "node tests/esm/test.js --skip-auth",
     "test:esm": "node tests/esm/test.js",
@@ -36,9 +39,7 @@
     "url": "https://github.com/faymaz"
   },
   "license": "MIT",
-  "dependencies": {
-    "node-fetch": "^3.3.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "eslint": "^8.54.0",
     "prettier": "^3.1.0",
@@ -53,8 +54,5 @@
   "bugs": {
     "url": "https://github.com/faymaz/jsdexcom/issues"
   },
-  "homepage": "https://github.com/faymaz/jsdexcom#readme",
-  "engines": {
-    "node": ">=14.0.0"
-  }
+  "homepage": "https://github.com/faymaz/jsdexcom#readme"
 }

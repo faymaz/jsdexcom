@@ -1,79 +1,110 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JSdexcom Standalone Example</title>
-    <script src="jsdexcom.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSdexcom Browser Demo</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-      .reading {
-        margin: 20px 0;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      .error {
-        color: red;
-        padding: 10px;
-        border: 1px solid red;
-        border-radius: 5px;
-      }
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .reading {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .error {
+            color: red;
+            padding: 10px;
+            background: #fff0f0;
+            border-radius: 4px;
+        }
+        .status-LOW { color: red; }
+        .status-HIGH { color: orange; }
+        .status-IN.RANGE { color: green; }
+        .delta-up { color: red; }
+        .delta-down { color: blue; }
+        .delta-stable { color: green; }
     </style>
-  </head>
-  <body>
-    <h1>JSdexcom Glucose Reader</h1>
-
+</head>
+<body>
+    <h1>JSdexcom Demo</h1>
+    
     <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" />
-
-      <label for="password">Password:</label>
-      <input type="password" id="password" />
-
-      <label for="region">Region:</label>
-      <select id="region">
-        <option value="us">United States</option>
-        <option value="ous" selected>Outside US</option>
-        <option value="jp">Japan</option>
-      </select>
-
-      <button onclick="getReading()">Get Reading</button>
+        <label for="username">Username:</label>
+        <input type="text" id="username">
+        <label for="password">Password:</label>
+        <input type="password" id="password">
+        <label for="region">Region:</label>
+        <select id="region">
+            <option value="us">US</option>
+            <option value="ous" selected>OUS</option>
+            <option value="jp">JP</option>
+        </select>
+        <button onclick="getReading()">Get Reading</button>
     </div>
 
     <div id="result" class="reading"></div>
 
+    <script src="jsdexcom-pure.js"></script>
     <script>
-      async function getReading() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        const region = document.getElementById('region').value;
-        const resultDiv = document.getElementById('result');
+        async function getReading() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const region = document.getElementById('region').value;
+            const resultDiv = document.getElementById('result');
 
-        if (!username || !password) {
-          resultDiv.innerHTML = '<div class="error">Please enter username and password</div>';
-          return;
-        }
+            if (!username || !password) {
+                resultDiv.innerHTML = '<div class="error">Please enter username and password</div>';
+                return;
+            }
 
-        try {
-          const dexcom = new JSDexcom(username, password, region);
-          const reading = await dexcom.getLatestGlucose();
+            try {
+                resultDiv.innerHTML = 'Loading...';
+                const dexcom = new JSDexcom(username, password, region);
+                const result = await dexcom.getLatestGlucoseWithDelta();
+                
+                const getDeltaClass = (delta) => {
+                    if (delta === null) return '';
+                    if (delta > 3) return 'delta-up';
+                    if (delta < -3) return 'delta-down';
+                    return 'delta-stable';
+                };
 
-          resultDiv.innerHTML = `
-                    <h2>Current Glucose Reading</h2>
-                    <p>Value: ${reading._value} mg/dL ${reading._trend_arrow}</p>
-                    <p>Trend: ${reading._trend_direction}</p>
-                    <p>Time: ${reading._datetime.toLocaleString()}</p>
+                resultDiv.innerHTML = `
+                    <h3>Current Reading</h3>
+                    <p><strong>Glucose:</strong> ${result.current._value} mg/dL ${result.current._trend_arrow}</p>
+                    <p><strong>Status:</strong> <span class="status-${result.current._status}">${result.current._status}</span></p>
+                    <p><strong>Change:</strong> <span class="${getDeltaClass(result.current._delta)}">
+                        ${result.current._delta !== null ? 
+                            (result.current._delta > 0 ? '+' : '') + result.current._delta + ' mg/dL' : 
+                            'N/A'}
+                    </span></p>
+                    <p><strong>Rate:</strong> ${result.current._rate_of_change !== null ? 
+                        result.current._rate_of_change.toFixed(2) + ' mg/dL/min' : 
+                        'N/A'}</p>
+                    <p><strong>Trend:</strong> ${result.current._trend_description}</p>
+                    <p><strong>Time:</strong> ${result.current._datetime.toLocaleString()}</p>
+
+                    ${result.previous ? `
+                        <h3>Previous Reading</h3>
+                        <p><strong>Glucose:</strong> ${result.previous._value} mg/dL ${result.previous._trend_arrow}</p>
+                        <p><strong>Time:</strong> ${result.previous._datetime.toLocaleString()}</p>
+                    ` : ''}
+
+                    <details>
+                        <summary>Raw JSON</summary>
+                        <pre>${JSON.stringify(result.current._json, null, 2)}</pre>
+                    </details>
                 `;
-        } catch (error) {
-          resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
         }
-      }
     </script>
-  </body>
+</body>
 </html>
