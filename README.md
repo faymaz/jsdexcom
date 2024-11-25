@@ -25,7 +25,7 @@ npm install @faymaz/jsdexcom
 ## Usage
 
 ### Basic Usage - Latest Version
-
+test.js
 ```javascript
 import JSDexcom from '@faymaz/jsdexcom';
 
@@ -46,7 +46,19 @@ async function monitorGlucose() {
         console.error('Error:', error.message);
     }
 }
+monitorGlucose();
 ```
+
+```bash
+node --experimental-fetch test.js
+```
+
+or
+
+```bash
+npm install node-fetch
+```
+
 ### Detailed error handling - Latest Version
 ```javascript
 import JSDexcom from '@faymaz/jsdexcom';
