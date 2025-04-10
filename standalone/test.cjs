@@ -15,16 +15,16 @@ async function test(username, password, requestedRegion = 'ous') {
         console.log('Region:', region.toUpperCase());
         console.log('Server:', region === 'us' ? 'https://share2.dexcom.com' : 'https://shareous1.dexcom.com');
 
-        // Import module dynamically
+       
         const { default: JSDexcom } = await importDynamic('./jsdexcom.js');
         
         console.log('\nCreating Dexcom client...');
         const dexcom = new JSDexcom(username, password, region);
         
-        // Fetch readings with delta
+       
         const result = await dexcom.getLatestGlucoseWithDelta();
         
-        // Display current reading
+       
         console.log('\nCurrent Reading:');
         console.log('--------------');
         console.log(`Value: ${result.current._value} mg/dL ${result.current._trend_arrow}`);
@@ -32,7 +32,7 @@ async function test(username, password, requestedRegion = 'ous') {
         console.log(`Time: ${result.current._datetime.toLocaleString()}`);
         console.log(`Status: ${result.current._status}`);
 
-        // Display trend analysis
+       
         if (result.current._delta !== null) {
             console.log('\nTrend Analysis:');
             console.log('--------------');
@@ -41,13 +41,13 @@ async function test(username, password, requestedRegion = 'ous') {
             console.log(`Rate: ${result.current._rate_of_change.toFixed(2)} mg/dL/min`);
             console.log(`Trend: ${result.current._trend_description}`);
 
-            // Previous reading
+           
             console.log('\nPrevious Reading:');
             console.log('--------------');
             console.log(`Value: ${result.previous._value} mg/dL ${result.previous._trend_arrow}`);
             console.log(`Time: ${result.previous._datetime.toLocaleString()}`);
 
-            // Rapid change warning
+           
             if (Math.abs(result.current._rate_of_change) > 3) {
                 console.warn('\n⚠️ Rapid glucose change detected!');
                 console.warn(`Rate of change: ${result.current._rate_of_change.toFixed(2)} mg/dL/min`);
@@ -56,7 +56,7 @@ async function test(username, password, requestedRegion = 'ous') {
             console.log('\nNo previous reading available for trend analysis');
         }
 
-        // Status alerts
+       
         if (result.current._status === 'LOW') {
             console.error('\n⚠️ LOW GLUCOSE ALERT!');
             console.error(`Current value: ${result.current._value} mg/dL`);
@@ -65,7 +65,7 @@ async function test(username, password, requestedRegion = 'ous') {
             console.error(`Current value: ${result.current._value} mg/dL`);
         }
 
-        // Raw data display
+       
         console.log('\nRaw Data:');
         console.log('--------------');
         console.log(JSON.stringify(result.current._json, null, 2));

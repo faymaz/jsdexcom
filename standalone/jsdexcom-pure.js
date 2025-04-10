@@ -76,7 +76,7 @@ class JSDexcom {
    */
   async authenticate() {
     try {
-      // Step 1: Get account ID
+     
       const authUrl = `${this.baseUrl}/ShareWebServices/Services/General/AuthenticatePublisherAccount`;
       const authResponse = await this.httpRequest(
         authUrl,
@@ -98,7 +98,7 @@ class JSDexcom {
         throw new Error('Invalid credentials');
       }
 
-      // Step 2: Login with account ID
+     
       const loginUrl = `${this.baseUrl}/ShareWebServices/Services/General/LoginPublisherAccountById`;
       const loginResponse = await this.httpRequest(
         loginUrl,
@@ -143,12 +143,12 @@ class JSDexcom {
         const params = new URLSearchParams({
             sessionId: this.sessionId,
             minutes: '10',
-            maxCount: '2'  // Request 2 readings to calculate delta
+            maxCount: '2' 
         });
 
         const response = await this.httpRequest(`${url}?${params}`, { method: 'POST' });
 
-        // Handle session expiration
+       
         if (response.status === 500) {
             const error = await response.json();
             if (error.Code === 'SessionIdNotFound') {
@@ -170,7 +170,7 @@ class JSDexcom {
         const current = this.formatReading(readings[0]);
         const previous = readings.length > 1 ? this.formatReading(readings[1]) : null;
 
-        // Calculate delta and rate of change
+       
         const delta = previous ? current._value - previous._value : null;
         const deltaTime = previous ? 
             (current._datetime.getTime() - previous._datetime.getTime()) / (1000 * 60) : 
@@ -231,7 +231,7 @@ class JSDexcom {
 
       const response = await this.httpRequest(`${url}?${params}`, { method: 'POST' });
 
-      // Handle session expiration
+     
       if (response.status === 500) {
         const error = await response.json();
         if (error.Code === 'SessionIdNotFound') {

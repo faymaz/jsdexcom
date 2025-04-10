@@ -1,7 +1,7 @@
 import JSDexcom from '../index.js';
 
 async function main() {
-  // Get credentials from environment variables or pass them directly
+ 
   const username = process.env.DEXCOM_USERNAME;
   const password = process.env.DEXCOM_PASSWORD;
   const region = process.env.DEXCOM_REGION || 'ous';
@@ -16,13 +16,13 @@ async function main() {
   }
 
   try {
-    // Create JSDexcom client
+   
     const dexcom = new JSDexcom(username, password, region);
 
-    // Get latest reading
+   
     const reading = await dexcom.getLatestGlucose();
 
-    // Display results
+   
     console.log('\nCurrent Glucose Reading:');
     console.log('------------------------');
     console.log(`Value: ${reading._value} mg/dL`);

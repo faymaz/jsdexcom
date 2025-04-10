@@ -16,9 +16,9 @@ class JSDexcom {
    * @enum {string}
    */
   static Regions = {
-    US: 'us',   // United States servers
-    OUS: 'ous', // Outside US (International) servers
-    JP: 'jp'    // Japan servers
+    US: 'us',  
+    OUS: 'ous',
+    JP: 'jp'   
   };
 
   /**
@@ -123,7 +123,7 @@ class JSDexcom {
    */
   async authenticate() {
     try {
-      // Step 1: Get account ID
+     
       if (!this.accountId) {
         console.log('Getting account ID...');
         const authUrl = `${this.baseUrl}/ShareWebServices/Services/General/AuthenticatePublisherAccount`;
@@ -146,7 +146,7 @@ class JSDexcom {
         }
       }
 
-      // Step 2: Login with account ID
+     
       console.log('Getting session ID...');
       const loginUrl = `${this.baseUrl}/ShareWebServices/Services/General/LoginPublisherAccountById`;
       const loginOptions = this.parseUrl(loginUrl, 'POST');
@@ -189,7 +189,7 @@ class JSDexcom {
       const options = this.parseUrl(url, 'POST');
       const response = await this.makeRequest(options);
 
-      // Handle session expiration
+     
       if (response.status === 500) {
         const error = await response.json();
         if (error.Code === 'SessionIdNotFound') {
@@ -209,27 +209,27 @@ class JSDexcom {
         throw new Error('No readings available');
       }
 
-      // Format current and previous readings
+     
       const current = this.formatReading(readings[0]);
       const previous = readings.length > 1 ? this.formatReading(readings[1]) : null;
 
-      // Calculate delta and rate of change
+     
       const delta = previous ? current._value - previous._value : null;
       const deltaTime = previous ? 
         (current._datetime.getTime() - previous._datetime.getTime()) / (1000 * 60) :
         null;
 
-      // Return enhanced reading data
+     
       return {
         current: {
           ...current,
-          _delta: delta,                                          // Change in mg/dL
-          _delta_time: deltaTime,                                 // Time difference in minutes
-          _previous_value: previous?._value,                      // Previous reading value
-          _rate_of_change: deltaTime ? (delta / deltaTime) : null, // Rate in mg/dL/min
-          _trend_description: this.getTrendDescription(delta)      // Human-readable trend
+          _delta: delta,                                         
+          _delta_time: deltaTime,                                
+          _previous_value: previous?._value,                     
+          _rate_of_change: deltaTime ? (delta / deltaTime) : null,
+          _trend_description: this.getTrendDescription(delta)     
         },
-        previous: previous  // Previous reading data
+        previous: previous 
       };
 
     } catch (error) {
@@ -294,16 +294,16 @@ class JSDexcom {
    */
   formatReading(reading) {
     const TREND_ARROWS = {
-      None: '→',           // No trend
-      DoubleUp: '↑↑',      // Rising quickly
-      SingleUp: '↑',       // Rising
-      FortyFiveUp: '↗',    // Rising slowly
-      Flat: '→',           // Stable
-      FortyFiveDown: '↘',  // Falling slowly
-      SingleDown: '↓',     // Falling
-      DoubleDown: '↓↓',    // Falling quickly
-      NotComputable: '?',  // Cannot determine trend
-      RateOutOfRange: '⚠️' // Rate of change unknown
+      None: '→',          
+      DoubleUp: '↑↑',     
+      SingleUp: '↑',      
+      FortyFiveUp: '↗',   
+      Flat: '→',          
+      FortyFiveDown: '↘', 
+      SingleDown: '↓',    
+      DoubleDown: '↓↓',   
+      NotComputable: '?', 
+      RateOutOfRange: '⚠️'
     };
 
     return {
@@ -333,9 +333,9 @@ class JSDexcom {
    * @private
    */
   getGlucoseStatus(value) {
-    if (value < 70) return 'LOW';      // Hypoglycemia threshold
-    if (value > 180) return 'HIGH';    // Hyperglycemia threshold
-    return 'IN RANGE';                 // Normal range
+    if (value < 70) return 'LOW';     
+    if (value > 180) return 'HIGH';   
+    return 'IN RANGE';                
   }
 
   /**
@@ -347,13 +347,13 @@ class JSDexcom {
    */
   getTrendDescription(delta) {
     if (delta === null) return 'Unknown';
-    if (delta > 15) return 'Rising quickly';     // Fast rise
-    if (delta > 7) return 'Rising';              // Moderate rise
-    if (delta > 3) return 'Rising slowly';       // Slow rise
-    if (delta >= -3) return 'Stable';            // Stable
-    if (delta >= -7) return 'Dropping slowly';   // Slow fall
-    if (delta >= -15) return 'Dropping';         // Moderate fall
-    return 'Dropping quickly';                   // Fast fall
+    if (delta > 15) return 'Rising quickly';    
+    if (delta > 7) return 'Rising';             
+    if (delta > 3) return 'Rising slowly';      
+    if (delta >= -3) return 'Stable';           
+    if (delta >= -7) return 'Dropping slowly';  
+    if (delta >= -15) return 'Dropping';        
+    return 'Dropping quickly';                  
   }
 }
 

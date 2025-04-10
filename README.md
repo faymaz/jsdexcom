@@ -29,11 +29,11 @@ npm install @faymaz/jsdexcom
 import JSDexcom from '@faymaz/jsdexcom';
 
 async function monitorGlucose() {
-    // Create instance
+   
     const dexcom = new JSDexcom('USERNAME', 'PASSWORD', 'ous');
 
     try {
-        // Get reading with trend analysis
+       
         const result = await dexcom.getLatestGlucoseWithDelta();
 
         console.log(`Current: ${result.current._value} mg/dL ${result.current._trend_arrow}`);
@@ -64,19 +64,19 @@ import JSDexcom from '@faymaz/jsdexcom';
 
 async function getDexcomData() {
     try {
-        // Create client (default region is 'ous')
+       
         const dexcom = new JSDexcom('USERNAME', 'PASSWORD', 'ous');
         
-        // Get reading with delta analysis
+       
         const result = await dexcom.getLatestGlucoseWithDelta();
         
-        // Current reading
+       
         console.log('\nCurrent Reading:');
         console.log(`Value: ${result.current._value} mg/dL ${result.current._trend_arrow}`);
         console.log(`Time: ${result.current._datetime.toLocaleString()}`);
         console.log(`Status: ${result.current._status}`);
         
-        // Delta information
+       
         if (result.current._delta !== null) {
             console.log('\nTrend Analysis:');
             console.log(`Change: ${result.current._delta > 0 ? '+' : ''}${result.current._delta} mg/dL`);
@@ -116,7 +116,7 @@ async function monitorGlucose(intervalMinutes = 5) {
             try {
                 const result = await dexcom.getLatestGlucoseWithDelta();
                 
-                // Display current reading
+               
                 console.log('\nNew Reading:');
                 console.log(`Time: ${result.current._datetime.toLocaleString()}`);
                 console.log(`Value: ${result.current._value} mg/dL ${result.current._trend_arrow}`);
@@ -128,7 +128,7 @@ async function monitorGlucose(intervalMinutes = 5) {
                     console.log(`Trend: ${result.current._trend_description}`);
                 }
                 
-                // Alerts
+               
                 if (result.current._status === 'LOW') {
                     console.error('⚠️ LOW GLUCOSE ALERT!');
                 } else if (result.current._status === 'HIGH') {
@@ -178,18 +178,18 @@ const dexcomJP = new JSDexcom('USERNAME', 'PASSWORD', 'jp');
             Value: 120,
             Trend: "Flat"
         },
-        _value: 120,                // Glucose value in mg/dL
-        _trend_direction: "Flat",   // Text description of trend
-        _trend_arrow: "→",         // Visual representation of trend
-        _datetime: Date,           // JavaScript Date object
-        _status: "IN RANGE",       // LOW, HIGH, or IN RANGE
-        _delta: 5,                 // Change from previous reading in mg/dL
-        _delta_time: 5,            // Time since previous reading in minutes
-        _rate_of_change: 1.0,      // Rate of change in mg/dL/min
-        _trend_description: "Rising slowly" // Human-readable trend description
+        _value: 120,               
+        _trend_direction: "Flat",  
+        _trend_arrow: "→",        
+        _datetime: Date,          
+        _status: "IN RANGE",      
+        _delta: 5,                
+        _delta_time: 5,           
+        _rate_of_change: 1.0,     
+        _trend_description: "Rising slowly"
     },
     previous: {
-        // Previous reading with same format as above (without delta fields)
+       
     }
 }
 ```

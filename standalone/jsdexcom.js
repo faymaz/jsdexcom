@@ -28,7 +28,7 @@ class JSDexcom {
         : 'https://shareous1.dexcom.com';
     this.applicationId = 'd89443d2-327c-4a6f-89e5-496bbb0317db';
     this.sessionId = null;
-    this.accountId = null;  // Added accountId tracking
+    this.accountId = null; 
 }
   /**
    * Authenticate with Dexcom Share server
@@ -37,7 +37,7 @@ class JSDexcom {
    * @private
    */
   async authenticate() {
-    // Step 1: Get account ID
+   
     if (!this.accountId) {
         console.log('Getting account ID...');
         const authUrl = `${this.baseUrl}/ShareWebServices/Services/General/AuthenticatePublisherAccount`;
@@ -67,7 +67,7 @@ class JSDexcom {
         }
     }
 
-    // Step 2: Login with account ID
+   
     console.log('Getting session ID...');
     const loginUrl = `${this.baseUrl}/ShareWebServices/Services/General/LoginPublisherAccountById`;
     
@@ -125,12 +125,12 @@ class JSDexcom {
             }
         });
 
-        // If session expired
+       
         if (response.status === 500) {
             const error = await response.json();
             if (error.Code === 'SessionIdNotFound') {
-                this.sessionId = null;  // Clear session ID only
-                await this.authenticate();  // Get new session
+                this.sessionId = null; 
+                await this.authenticate(); 
                 return this.getLatestGlucoseWithDelta();
             }
             throw new Error(`Server error: ${error.Message}`);
@@ -166,10 +166,10 @@ class JSDexcom {
         };
 
     } catch (error) {
-        // If it's an authentication error, try one more time with new credentials
+       
         if (error.message.includes('SessionIdNotFound')) {
             this.sessionId = null;
-            this.accountId = null;  // Reset both tokens
+            this.accountId = null; 
             await this.authenticate();
             return this.getLatestGlucoseWithDelta();
         }

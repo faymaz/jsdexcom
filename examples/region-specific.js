@@ -2,7 +2,7 @@ import JSDexcom from '../index.js';
 
 // Example comparing glucose readings across different regions
 async function compareRegions() {
-  // Get credentials from environment variables
+ 
   const username = process.env.DEXCOM_USERNAME;
   const password = process.env.DEXCOM_PASSWORD;
 
@@ -14,7 +14,7 @@ async function compareRegions() {
     process.exit(1);
   }
 
-  // Test each region
+ 
   console.log('\nTesting Dexcom Share across regions...');
   console.log('====================================\n');
 

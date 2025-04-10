@@ -8,7 +8,7 @@ import JSDexcom from './jsdexcom.js';
 
 async function test() {
     try {
-        // Initialize client
+       
         console.log('Creating Dexcom client...');
         const dexcom = new JSDexcom(
             process.env.DEXCOM_USERNAME,
@@ -16,10 +16,10 @@ async function test() {
             process.env.DEXCOM_REGION || 'ous'
         );
 
-        // Fetch data with delta
+       
         const result = await dexcom.getLatestGlucoseWithDelta();
         
-        // Display current reading
+       
         console.log('\nCurrent Reading:');
         console.log('--------------');
         console.log(`Value: ${result.current._value} mg/dL ${result.current._trend_arrow}`);
@@ -27,7 +27,7 @@ async function test() {
         console.log(`Time: ${result.current._datetime.toLocaleString()}`);
         console.log(`Status: ${result.current._status}`);
 
-        // Display trend analysis if available
+       
         if (result.current._delta !== null) {
             console.log('\nTrend Analysis:');
             console.log('--------------');
@@ -36,13 +36,13 @@ async function test() {
             console.log(`Rate: ${result.current._rate_of_change.toFixed(2)} mg/dL/min`);
             console.log(`Trend: ${result.current._trend_description}`);
 
-            // Previous reading
+           
             console.log('\nPrevious Reading:');
             console.log('--------------');
             console.log(`Value: ${result.previous._value} mg/dL ${result.previous._trend_arrow}`);
             console.log(`Time: ${result.previous._datetime.toLocaleString()}`);
 
-            // Additional trend warnings
+           
             if (Math.abs(result.current._rate_of_change) > 3) {
                 console.warn('\n⚠️ Rapid glucose change detected!');
                 console.warn(`Rate of change: ${result.current._rate_of_change.toFixed(2)} mg/dL/min`);
@@ -51,7 +51,7 @@ async function test() {
             console.log('\nNo previous reading available for trend analysis');
         }
 
-        // Status alerts
+       
         if (result.current._status === 'LOW') {
             console.error('\n⚠️ LOW GLUCOSE ALERT!');
             console.error(`Current value: ${result.current._value} mg/dL`);
@@ -60,7 +60,7 @@ async function test() {
             console.error(`Current value: ${result.current._value} mg/dL`);
         }
 
-        // Raw data display
+       
         console.log('\nRaw Data:');
         console.log('--------------');
         console.log(JSON.stringify(result.current._json, null, 2));

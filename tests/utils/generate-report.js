@@ -8,7 +8,7 @@ const reportFile = path.join(LOG_DIR, `report-${today}.html`);
 function generateReport() {
   console.log('Generating test report...');
 
-  // Ensure logs directory exists
+ 
   if (!fs.existsSync(LOG_DIR)) {
     fs.mkdirSync(LOG_DIR, { recursive: true });
   }

@@ -17,7 +17,7 @@
           console.log('Fetching glucose reading...');
           const result = await dexcom.getLatestGlucoseWithDelta();
           
-          // Display current reading
+         
           console.log('\nCurrent Reading:');
           console.log('--------------');
           console.log(`Value: ${result.current._value} mg/dL`);
@@ -25,7 +25,7 @@
           console.log(`Time: ${result.current._datetime.toLocaleString()}`);
           console.log(`Status: ${result.current._status}`);
 
-          // Display delta information if available
+         
           if (result.current._delta !== null) {
               console.log('\nTrend Analysis:');
               console.log('--------------');
@@ -41,7 +41,7 @@
               console.log('\nNo previous reading available for trend analysis');
           }
 
-          // Check for alerts
+         
           if (result.current._value < 70) {
               console.error('\n⚠️ LOW GLUCOSE ALERT!');
           } else if (result.current._value > 180) {
@@ -62,6 +62,6 @@
       }
   }
 
-  // Run the test
+ 
   test();
 })();
