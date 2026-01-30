@@ -1,5 +1,9 @@
 ![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=faymaz.jsdexcom)
 
+[![npm version](https://badge.fury.io/js/jsdexcom.svg)](https://www.npmjs.com/package/jsdexcom)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
 # Language EN
 
 **Author:** [faymaz](https://www.npmjs.com/~faymaz)
